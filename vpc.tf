@@ -15,13 +15,11 @@ resource "aws_vpc" "loom" {
 }
 
 resource "aws_subnet" "loom" {
-  count = 2
-
+  count = 1
   availability_zone = data.aws_availability_zones.available.names[count.index]
   cidr_block        = "13.0.${count.index}.0/24"
   vpc_id            = aws_vpc.loom.id
   map_public_ip_on_launch = "true"
-
   tags = map(
     "Name", "Loom Subnet",
   )
@@ -45,7 +43,7 @@ resource "aws_route_table" "loom" {
 }
 
 resource "aws_route_table_association" "loom" {
-  count = 2
+  count = 1
   subnet_id      = aws_subnet.loom.*.id[count.index]
   route_table_id = aws_route_table.loom.id
 }
