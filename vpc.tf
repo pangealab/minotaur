@@ -62,7 +62,7 @@ resource "aws_route_table_association" "loom" {
 # VPC Configuration
 #
 
-resource "aws_security_group" "loom-security-group" {
+resource "aws_security_group" "loom" {
   name        = "Loom Security Group"
   description = "Loom Security Group"
   vpc_id      = aws_vpc.loom.id
