@@ -1,4 +1,7 @@
-# Save Terraform State to S3 Bucket
+#
+# Backend (S3)  Configuration
+#
+
 terraform {
   backend "s3" {
     bucket = "minotaur-terraform-backend"
