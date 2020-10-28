@@ -19,7 +19,7 @@ cat > ./awslogs.conf <<- EOF
 state_file = /var/awslogs/state/agent-state
 
 [/var/log/messages]
-log_stream_name = openshift-node-{instance_id}
+log_stream_name = loom-node-{instance_id}
 log_group_name = /var/log/messages
 file = /var/log/messages
 datetime_format = %b %d %H:%M:%S
@@ -27,7 +27,7 @@ buffer_duration = 5000
 initial_position = start_of_file
 
 [/var/log/user-data.log]
-log_stream_name = openshift-node-{instance_id}
+log_stream_name = loom-node-{instance_id}
 log_group_name = /var/log/user-data.log
 file = /var/log/user-data.log
 EOF
@@ -43,7 +43,7 @@ chkconfig awslogs on
 
 # Install packages required to setup Loom.
 yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion
-yum update -y
+yum update -yp
 
 # Note: The step below is not in the official docs, I needed it to install
 # Docker. If anyone finds out why, I'd love to know.
@@ -54,8 +54,6 @@ yum-config-manager --enable rhui-REGION-rhel-server-extras
 yum install -y docker
 
 # Configure the Docker storage back end to prepare and use our EBS block device.
-# https://docs.openshift.org/latest/install_config/install/host_preparation.html#configuring-docker-storage
-# Why xvdf? See:
 # http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html
 cat <<EOF > /etc/sysconfig/docker-storage-setup
 DEVS=/dev/xvdf
@@ -71,3 +69,7 @@ systemctl restart docker
 # Allow the ec2-user to sudo without a tty, which is required when we run post
 # install scripts on the server.
 echo Defaults:ec2-user \!requiretty >> /etc/sudoers
+
+# Install Docker Compose
+curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose

@@ -1,9 +1,5 @@
 #
-# VPC Resources
-#  * VPC
-#  * Subnets
-#  * Internet Gateway
-#  * Route Table
+# VPC Configuration
 #
 
 resource "aws_vpc" "loom" {
@@ -57,10 +53,6 @@ resource "aws_route_table_association" "loom" {
   subnet_id      = aws_subnet.loom.id
   route_table_id = aws_route_table.loom.id
 }
-
-#
-# VPC Configuration
-#
 
 resource "aws_security_group" "loom" {
   name        = "Loom Security Group"
