@@ -42,17 +42,16 @@ service awslogs start
 chkconfig awslogs on
 
 # Install packages required to setup Loom.
-yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion yum-utils
-yum update -yp
-
-# Install Docker Repo
-yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum check-update
 
 # Docker setup. Check the version with `docker version`, should be 1.18
-yum install -y docker-ce docker-ce-cli containerd.io
+curl -fsSL https://get.docker.com/ | sh
+
+# Add centos to docker sudoers
+usermod -aG docker centos
 
 # Configure the Docker storage back end to prepare and use our EBS block device.
-# http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html
+# http://docs.aws.amazon.com/AWSEC2/  latest/UserGuide/ebs-using-volumes.html
 cat <<EOF > /etc/sysconfig/docker-storage-setup
 DEVS=/dev/xvdf
 VG=docker-vg
