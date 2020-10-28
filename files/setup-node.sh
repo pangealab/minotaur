@@ -42,16 +42,14 @@ service awslogs start
 chkconfig awslogs on
 
 # Install packages required to setup Loom.
-yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion
+yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion yum-utils
 yum update -yp
 
-# Note: The step below is not in the official docs, I needed it to install
-# Docker. If anyone finds out why, I'd love to know.
-# See: https://forums.aws.amazon.com/thread.jspa?messageID=574126
-yum-config-manager --enable rhui-REGION-rhel-server-extras
+# Install Docker Repo
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
-# Docker setup. Check the version with `docker version`, should be 1.12.
-yum install -y docker
+# Docker setup. Check the version with `docker version`, should be 1.18
+yum install -y docker-ce docker-ce-cli containerd.io
 
 # Configure the Docker storage back end to prepare and use our EBS block device.
 # http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html
