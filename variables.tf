@@ -12,6 +12,14 @@ variable "public_key_path" {
   default = "~/.ssh/loom.pub"
 }
 
+variable "aws_access_key_id" {
+  description = "AWS Access Key ID"
+}
+
+variable "aws_secret_access_key" {
+  description = "AWS Secret Access Key"
+}
+
 data "aws_availability_zones" "azs" {}
 
 data "aws_region" "current" {}

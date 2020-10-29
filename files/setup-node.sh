@@ -43,6 +43,7 @@ chkconfig awslogs on
 
 # Install packages required to setup Loom.
 yum check-update
+yum install -y unzip zip curl wget
 
 # Docker setup. Check the version with `docker version`, should be 1.18
 curl -fsSL https://get.docker.com/ | sh
@@ -70,3 +71,20 @@ echo Defaults:ec2-user \!requiretty >> /etc/sudoers
 # Install Docker Compose
 curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
+
+# Create Loom user
+useradd -gusers -s/bin/bash -p $(openssl passwd -1 "changeit") -m loom
+usermod -aG wheel loom
+usermod -aG docker loom
+
+# Install AWS CLI 2.0
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+./aws/install
+
+# Set AWS Credentials
+export AWS_ACCESS_KEY_ID=${aws_access_key_id}
+export AWS_SECRET_ACCESS_KEY=${aws_secret_access_key}
+
+# Copy Loom files from S3 to EC2
+aws s3 cp s3://advlab-tank/loom-onprem-stable-3.7.0-b97.tar /tmp/loom-onprem-stable-3.7.0-b97.tar
