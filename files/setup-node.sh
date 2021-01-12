@@ -43,7 +43,8 @@ chkconfig awslogs on
 
 # Install packages required to setup Loom.
 yum check-update
-yum install -y unzip zip curl wget
+yum install -y epel-release
+yum install -y unzip zip curl wget htop
 
 # Docker setup. Check the version with `docker version`, should be 1.18
 curl -fsSL https://get.docker.com/ | sh
@@ -72,10 +73,11 @@ echo Defaults:ec2-user \!requiretty >> /etc/sudoers
 curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
+# Create Loom Group
+groupadd loom
+
 # Create Loom user
-useradd -gusers -s/bin/bash -p $(openssl passwd -1 "changeit") -m loom
-usermod -aG wheel loom
-usermod -aG docker loom
+useradd -gusers -s/bin/bash -p $(openssl passwd -1 "changeit") -m loom -G wheel,docker,loom
 
 # Install AWS CLI 2.0
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -87,4 +89,22 @@ export AWS_ACCESS_KEY_ID=${aws_access_key_id}
 export AWS_SECRET_ACCESS_KEY=${aws_secret_access_key}
 
 # Copy Loom files from S3 to EC2
-aws s3 cp s3://advlab-tank/loom-onprem-stable-3.7.0-b97.tar /tmp/loom-onprem-stable-3.7.0-b97.tar
+aws s3 cp s3://advlab-tank/loom-onprem-stable-3.8.0-b112.tar /tmp/sofie.tar
+chmod 777 /tmp/sofie.tar
+
+# Unpack Loom
+mkdir -p /tmp/sofie
+tar -xvf /tmp/sofie.tar -C /tmp/sofie --strip-components=1
+
+# Install Loom
+# su - loom
+# cd /tmp/sofie
+# export LOOM_HOME=/opt/loom
+# export LOOM_WEB_ACCESS=true
+# export LOOM_CLIENT_NAME=stage
+# export LOOM_SUPER_ADMIN_PASSWORD=changeit
+# export LOOM_ADDRESS=loom.hopto.org
+# export LOOM_DB_REMOTE=No
+# export LOOM_ES_HOST=No
+# export LOOM_NETWORK_PREFIX=172.19.0
+# ./deploy.sh
