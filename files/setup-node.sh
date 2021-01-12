@@ -90,21 +90,26 @@ export AWS_SECRET_ACCESS_KEY=${aws_secret_access_key}
 
 # Copy Loom files from S3 to EC2
 aws s3 cp s3://advlab-tank/loom-onprem-stable-3.8.0-b112.tar /tmp/sofie.tar
-chmod 777 /tmp/sofie.tar
+chmod -R 777 /tmp/sofie.tar
 
 # Unpack Loom
 mkdir -p /tmp/sofie
 tar -xvf /tmp/sofie.tar -C /tmp/sofie --strip-components=1
+chmod -R 777 /tmp/sofie
+
+# Wait
+read -p "Pausing for 3 Minutes...." -t 180 ;echo -e  "\nContinuing..."
+echo "Continuing ..."
 
 # Install Loom
-# su - loom
-# cd /tmp/sofie
-# export LOOM_HOME=/opt/loom
-# export LOOM_WEB_ACCESS=true
-# export LOOM_CLIENT_NAME=stage
-# export LOOM_SUPER_ADMIN_PASSWORD=changeit
-# export LOOM_ADDRESS=loom.hopto.org
-# export LOOM_DB_REMOTE=No
-# export LOOM_ES_HOST=No
-# export LOOM_NETWORK_PREFIX=172.19.0
-# ./deploy.sh
+su - loom
+cd /tmp/sofie
+export LOOM_HOME=${loom_home}
+export LOOM_WEB_ACCESS=${loom_web_access}
+export LOOM_CLIENT_NAME=${loom_client_name}
+export LOOM_SUPER_ADMIN_PASSWORD=${loom_super_admin_password}
+export LOOM_ADDRESS=${loom_address}
+export LOOM_DB_REMOTE=${loom_db_remote}
+export LOOM_ES_HOST=${loom_es_host}
+export LOOM_NETWORK_PREFIX=${loom_network_prefix}
+./deploy.sh

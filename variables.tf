@@ -20,6 +20,38 @@ variable "aws_secret_access_key" {
   description = "AWS Secret Access Key"
 }
 
+variable "loom_home" {
+  description = "Loom Home"
+}
+
+variable "loom_web_access" {
+  description = "Loom Web Access"
+}
+
+variable "loom_client_name" {
+  description = "Loom Client Name"
+}
+
+variable "loom_super_admin_password" {
+  description = "Loom Super Admin Password"
+}
+
+variable "loom_address" {
+  description = "Loom Address"
+}
+
+variable "loom_db_remote" {
+  description = "Loom DB Remote"
+}
+
+variable "loom_es_host" {
+  description = "Loom ES Host"
+}
+
+variable "loom_network_prefix" {
+  description = "Loom Network Prefix"
+}
+
 data "aws_availability_zones" "azs" {}
 
 data "aws_region" "current" {}
