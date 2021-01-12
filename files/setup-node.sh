@@ -73,16 +73,16 @@ echo Defaults:ec2-user \!requiretty >> /etc/sudoers
 curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
+# Install AWS CLI 2.0
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+./aws/install
+
 # Create Loom Group
 groupadd loom
 
 # Create Loom user
 useradd -gusers -s/bin/bash -p $(openssl passwd -1 "changeit") -m loom -G wheel,docker,loom
-
-# Install AWS CLI 2.0
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-./aws/install
 
 # Run as Loom
 su - loom
@@ -93,6 +93,10 @@ export AWS_SECRET_ACCESS_KEY=${aws_secret_access_key}
 
 # Copy Loom files from S3 to EC2
 aws s3 cp s3://advlab-tank/loom-onprem-stable-3.8.0-b112.tar $HOME/sofie.tar
+
+# Wait
+read -p "Pausing for 1 Minutes...." -t 60 ;echo -e  "\nContinuing..."
+echo "Continuing ..."
 
 # Unpack Loom
 mkdir -p $HOME/sofie
