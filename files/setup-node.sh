@@ -64,10 +64,11 @@ docker-storage-setup
 systemctl stop docker
 rm -rf /var/lib/docker/*
 systemctl restart docker
+systemctl enable docker
 
-# Allow the ec2-user to sudo without a tty, which is required when we run post
+# Allow the centos to sudo without a tty, which is required when we run post
 # install scripts on the server.
-echo Defaults:ec2-user \!requiretty >> /etc/sudoers
+echo Defaults:centos \!requiretty >> /etc/sudoers
 
 # Install Docker Compose
 curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -81,11 +82,11 @@ unzip awscliv2.zip
 # Create Loom Group
 groupadd loom
 
-# Create Loom user
+# Create Loom User and set Group Membership
 useradd -gusers -s/bin/bash -p $(openssl passwd -1 "changeit") -m loom -G wheel,docker,loom
 
 # Run as Loom
-su - loom
+sudo su - loom
 
 # Set AWS Credentials
 export AWS_ACCESS_KEY_ID=${aws_access_key_id}
