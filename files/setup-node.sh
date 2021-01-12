@@ -96,8 +96,8 @@ export AWS_SECRET_ACCESS_KEY=${aws_secret_access_key}
 aws s3 cp s3://advlab-tank/loom-onprem-stable-3.8.0-b112.tar $HOME/sofie.tar
 
 # Wait
-read -p "Pausing for 1 Minutes...." -t 60 ;echo -e  "\nContinuing..."
-echo "Continuing ..."
+# read -p "Pausing for 1 Minutes...." -t 60 ;echo -e  "\nContinuing..."
+# echo "Continuing ..."
 
 # Unpack Loom
 mkdir -p $HOME/sofie
