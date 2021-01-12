@@ -24,7 +24,6 @@ variable "loom_skip_hardware_req" {
   description = "Loom Skip Harware Requirement"
 }
 
-
 variable "loom_home" {
   description = "Loom Home"
 }
