@@ -24,6 +24,7 @@ data "template_file" "setup-node" {
     availability_zone = data.aws_availability_zones.azs.names[0]
     aws_access_key_id = var.aws_access_key_id
     aws_secret_access_key = var.aws_secret_access_key
+    loom_skip_hardware_req = var.loom_skip_hardware_req
     loom_home = var.loom_home
     loom_web_access = var.loom_web_access
     loom_client_name = var.loom_client_name

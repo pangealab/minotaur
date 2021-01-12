@@ -84,26 +84,23 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 ./aws/install
 
+# Run as Loom
+su - loom
+
 # Set AWS Credentials
 export AWS_ACCESS_KEY_ID=${aws_access_key_id}
 export AWS_SECRET_ACCESS_KEY=${aws_secret_access_key}
 
 # Copy Loom files from S3 to EC2
-aws s3 cp s3://advlab-tank/loom-onprem-stable-3.8.0-b112.tar /tmp/sofie.tar
-chmod -R 777 /tmp/sofie.tar
+aws s3 cp s3://advlab-tank/loom-onprem-stable-3.8.0-b112.tar $HOME/sofie.tar
 
 # Unpack Loom
-mkdir -p /tmp/sofie
-tar -xvf /tmp/sofie.tar -C /tmp/sofie --strip-components=1
-chmod -R 777 /tmp/sofie
-
-# Wait
-read -p "Pausing for 3 Minutes...." -t 180 ; echo -e  "\nContinuing..."
-echo "Continuing ..."
+mkdir -p $HOME/sofie
+tar -xvf $HOME/sofie.tar -C $HOME/sofie --strip-components=1
 
 # Install Loom
-su - loom
-cd /tmp/sofie
+cd $HOME/sofie
+export LOOM_SKIP_HARDWARE_REQ=${loom_skip_hardware_req}
 export LOOM_HOME=${loom_home}
 export LOOM_WEB_ACCESS=${loom_web_access}
 export LOOM_CLIENT_NAME=${loom_client_name}

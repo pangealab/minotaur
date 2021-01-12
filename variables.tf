@@ -20,6 +20,11 @@ variable "aws_secret_access_key" {
   description = "AWS Secret Access Key"
 }
 
+variable "loom_skip_hardware_req" {
+  description = "Loom Skip Harware Requirement"
+}
+
+
 variable "loom_home" {
   description = "Loom Home"
 }
