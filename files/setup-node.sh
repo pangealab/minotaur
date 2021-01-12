@@ -98,7 +98,7 @@ tar -xvf /tmp/sofie.tar -C /tmp/sofie --strip-components=1
 chmod -R 777 /tmp/sofie
 
 # Wait
-read -p "Pausing for 3 Minutes...." -t 180 ;echo -e  "\nContinuing..."
+read -p "Pausing for 3 Minutes...." -t 180 ; echo -e  "\nContinuing..."
 echo "Continuing ..."
 
 # Install Loom
